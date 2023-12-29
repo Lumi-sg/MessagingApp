@@ -1,13 +1,25 @@
-import mongoose, { Schema } from "mongoose";
-import { z } from "zod";
+import mongoose, { Document, Schema, Types } from "mongoose";
 
-const userSchema = z.object({
-	username: z.string().min(3).max(15),
-	password: z.string().min(6).max(20),
-	friends: z.array(z.string()),
-	statusMessage: z.string().optional(),
+export type UserType = Document & {
+	name: string;
+	password: string;
+	friends: UserType[];
+	statusMessage?: string;
+};
+
+const userSchema = new Schema<UserType>({
+	name: {
+		type: String,
+		required: true,
+		unique: true,
+		minlength: 3,
+		maxlength: 15,
+	},
+	password: { type: String, required: true, minlength: 5, maxlength: 20 },
+	friends: [{ type: Types.ObjectId, ref: "User" }],
+	statusMessage: { type: String },
 });
 
-export type UserType = z.infer<typeof userSchema>;
+const User = mongoose.model<UserType>("User", userSchema);
 
-export const UserModel = mongoose.model<UserType>("User", new Schema());
+export default User;
