@@ -1,4 +1,5 @@
 import express from "express";
+import * as UserController from "../controllers/UserController";
 
 const router = express.Router();
 
@@ -6,6 +7,8 @@ const router = express.Router();
 router.get("/", (req, res) => {
 	res.render("index");
 });
+
+router.post("/signup", UserController.create_user_post);
 
 // Catch-all route for handling all other requests
 router.use((req, res) => {
