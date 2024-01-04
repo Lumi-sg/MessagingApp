@@ -9,6 +9,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/signup", UserController.create_user_post);
+router.post("/login", UserController.login_user_post);
 
 // Catch-all route for handling all other requests
 router.use((req, res) => {

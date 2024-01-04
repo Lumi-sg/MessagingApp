@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import express from "express";
+import express, { response } from "express";
 import asyncHandler from "express-async-handler";
 import { body, validationResult } from "express-validator";
 import passport from "passport";
@@ -49,3 +49,27 @@ export const create_user_post = [
 		}
 	}),
 ];
+
+export const login_user_post = (
+	req: express.Request,
+	res: express.Response,
+	next: express.NextFunction
+) => {
+	passport.authenticate("local", (err: any, user: any, info: any) => {
+		if (err) {
+			return next(err);
+		}
+		if (!user) {
+			const errorMessage =
+				info && info.message ? info.message : "Unknown error.";
+			return res.status(401).send(errorMessage);
+		}
+		req.logIn(user, (err) => {
+			if (err) {
+				return next(err);
+			}
+			console.log(`User ${user.username} logged in.`);
+			return res.sendStatus(200);
+		});
+	})(req, res, next);
+};
