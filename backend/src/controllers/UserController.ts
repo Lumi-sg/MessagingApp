@@ -101,22 +101,24 @@ export const update_user_status_post = [
 	asyncHandler(async (req: express.Request, res: express.Response) => {
 		try {
 			const errors = validationResult(req);
-			//add types
 			const { userID, updatedStatusMessage } = req.body;
 
 			if (!errors.isEmpty()) {
 				console.log("Validation errors", errors.array());
 				res.status(400).send(errors);
-			} else {
-				const user = await User.findById(userID);
-				if (user) {
-					user.statusMessage = updatedStatusMessage;
-					await user.save();
-					res.status(200).send("User status updated");
-				} else {
-					res.status(404).send("User not found");
-				}
+				return;
 			}
+
+			const user = await User.findById(userID);
+
+			if (!user) {
+				res.status(404).send("User not found");
+				return;
+			}
+
+			user.statusMessage = updatedStatusMessage;
+			await user.save();
+			res.status(200).send("User status updated");
 		} catch (error: any) {
 			console.error("Error updating user status", error);
 			res.status(500).send(
