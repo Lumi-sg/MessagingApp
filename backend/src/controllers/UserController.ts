@@ -5,6 +5,9 @@ import { body, validationResult } from "express-validator";
 import passport from "passport";
 import { UserType, User } from "../models/User";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export const create_user_post = [
 	body("username")
@@ -69,7 +72,7 @@ export const login_user_post = (
 		// If authentication is successful, generate a token
 		const token = jwt.sign(
 			{ userId: user._id, username: user.username },
-			"your-secret-key",
+			`${process.env.SECRET}`,
 			{
 				expiresIn: "1h",
 			}
@@ -86,14 +89,24 @@ export const login_user_post = (
 	})(req, res, next);
 };
 
-export const update_user_status_post = (req: express.Request, res: express.Response) => {
-	
-}
+export const update_user_status_post = (
+	req: express.Request,
+	res: express.Response
+) => {};
 
-export const logout_user_get = (req: express.Request, res: express.Response) => {
+export const logout_user_post = (
+	req: express.Request,
+	res: express.Response
+) => {
+	console.log("Entering logout_user_post");
+
 	res.cookie("jwt", "", {
 		httpOnly: true,
 		secure: process.env.NODE_ENV === "production",
 		expires: new Date(0),
 	});
-}
+
+	console.log("JWT Cookie cleared");
+
+	res.status(200).send("Logout successful");
+};
