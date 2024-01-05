@@ -36,20 +36,22 @@ export const create_user_post = [
 			if (!errors.isEmpty()) {
 				console.log("Validation errors", errors.array());
 				res.status(400).send(errors);
-			} else if (takenUserName) {
+				return;
+			}
+			if (takenUserName) {
 				console.log(`Username "${username}" already taken.`);
 				res.status(400).send("Username already taken");
-			} else {
-				const hashedPassword = await bcrypt.hash(password, 10);
-				const user = new User({
-					username,
-					password: hashedPassword,
-					age,
-					country,
-				});
-				await user.save();
-				res.status(201).send("User created");
+				return;
 			}
+			const hashedPassword = await bcrypt.hash(password, 10);
+			const user = new User({
+				username,
+				password: hashedPassword,
+				age,
+				country,
+			});
+			await user.save();
+			res.status(201).send("User created");
 		} catch (error: any) {
 			console.error("Error creating user", error);
 			res.status(500).send(`Error creating user: ${error.message}`);
