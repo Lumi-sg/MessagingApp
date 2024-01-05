@@ -4,6 +4,7 @@ import asyncHandler from "express-async-handler";
 import { body, validationResult } from "express-validator";
 import passport from "passport";
 import { UserType, User } from "../models/User";
+import jwt from "jsonwebtoken";
 
 export const create_user_post = [
 	body("username")
@@ -64,12 +65,35 @@ export const login_user_post = (
 				info && info.message ? info.message : "Unknown error.";
 			return res.status(401).send(errorMessage);
 		}
-		req.logIn(user, (err) => {
-			if (err) {
-				return next(err);
+
+		// If authentication is successful, generate a token
+		const token = jwt.sign(
+			{ userId: user._id, username: user.username },
+			"your-secret-key",
+			{
+				expiresIn: "1h",
 			}
-			console.log(`User ${user.username} logged in.`);
-			return res.sendStatus(200);
+		);
+
+		// Set the cookie
+		res.cookie("jwt", token, {
+			httpOnly: true,
+			secure: process.env.NODE_ENV === "production",
 		});
+
+		// Respond with the generated token or any other user-related data
+		return res.status(200).json({ token, user });
 	})(req, res, next);
 };
+
+export const update_user_status_post = (req: express.Request, res: express.Response) => {
+	
+}
+
+export const logout_user_get = (req: express.Request, res: express.Response) => {
+	res.cookie("jwt", "", {
+		httpOnly: true,
+		secure: process.env.NODE_ENV === "production",
+		expires: new Date(0),
+	});
+}
