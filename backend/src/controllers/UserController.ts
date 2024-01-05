@@ -13,14 +13,17 @@ export const create_user_post = [
 	body("username")
 		.trim()
 		.isLength({ min: 3, max: 15 })
+		.escape()
 		.withMessage("Username must be between 3 and 15 characters"),
 	body("password")
 		.trim()
 		.isLength({ min: 5, max: 20 })
+		.escape()
 		.withMessage("Password must be between 5 and 20 characters"),
 	body("age")
 		.trim()
 		.isInt({ min: 13, max: 100 })
+		.escape()
 		.withMessage("Age must be between 13 and 100"),
 	body("country").trim().isLength({ min: 3, max: 15 }),
 
@@ -90,7 +93,37 @@ export const login_user_post = (
 };
 
 export const update_user_status_post = [
-	asyncHandler(async (req: express.Request, res: express.Response) => {}),
+	body("statusMessage")
+		.trim()
+		.isLength({ min: 0, max: 50 })
+		.escape()
+		.withMessage("Status message must be between 0 and 50 characters"),
+	asyncHandler(async (req: express.Request, res: express.Response) => {
+		try {
+			const errors = validationResult(req);
+			//add types
+			const { userID, updatedStatusMessage } = req.body;
+
+			if (!errors.isEmpty()) {
+				console.log("Validation errors", errors.array());
+				res.status(400).send(errors);
+			} else {
+				const user = await User.findById(userID);
+				if (user) {
+					user.statusMessage = updatedStatusMessage;
+					await user.save();
+					res.status(200).send("User status updated");
+				} else {
+					res.status(404).send("User not found");
+				}
+			}
+		} catch (error: any) {
+			console.error("Error updating user status", error);
+			res.status(500).send(
+				`Error updating user status: ${error.message}`
+			);
+		}
+	}),
 ];
 
 export const logout_user_post = (
