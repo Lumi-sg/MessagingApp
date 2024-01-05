@@ -89,10 +89,9 @@ export const login_user_post = (
 	})(req, res, next);
 };
 
-export const update_user_status_post = (
-	req: express.Request,
-	res: express.Response
-) => {};
+export const update_user_status_post = [
+	asyncHandler(async (req: express.Request, res: express.Response) => {}),
+];
 
 export const logout_user_post = (
 	req: express.Request,
