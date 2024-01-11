@@ -26,6 +26,10 @@ const userSchema = new Schema<UserType>({
 	country: { type: String, required: true },
 });
 
+userSchema.virtual("url").get(function () {
+	return `/user/${this._id}`;
+});
+
 export const User = mongoose.model<UserType>("User", userSchema);
 
 export default User;
