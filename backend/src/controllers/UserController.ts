@@ -146,3 +146,56 @@ export const logout_user_post = (
 
 	res.status(200).send("Logout successful");
 };
+
+export const get_single_user = asyncHandler(
+	async (req: express.Request, res: express.Response) => {
+		try {
+			const user = await User.findById(req.params.id).select("-password");
+			if (!user) {
+				console.log("User not found");
+				res.status(404).send("User not found");
+				return;
+			}
+			console.log(`${user.username} found!`);
+			res.status(200).json(user);
+		} catch (error: any) {
+			console.error("Error getting single user", error);
+			res.status(500).send(`Error getting single user: ${error.message}`);
+		}
+	}
+);
+
+export const get_all_users = asyncHandler(
+	async (req: express.Request, res: express.Response) => {
+		try {
+			const users = await User.find().select("-password -friends");
+			res.status(200).json(users);
+		} catch (error: any) {
+			console.error("Error getting all users", error);
+			res.status(500).send(`Error getting all users: ${error.message}`);
+		}
+	}
+);
+
+export const add_friend = asyncHandler(
+	async (req: express.Request, res: express.Response) => {
+		try {
+			const { userID, friendID } = req.body;
+			const user = await User.findById(userID);
+			const friend = await User.findById(friendID);
+			if (!user || !friend) {
+				console.log("User or friend not found");
+				res.status(404).send("User or friend not found");
+				return;
+			}
+			user.friends.push(friendID);
+			friend.friends.push(userID);
+			await user.save();
+			await friend.save();
+			res.status(200).send("Friend added");
+		} catch (error: any) {
+			console.error("Error adding friend", error);
+			res.status(500).send(`Error adding friend: ${error.message}`);
+		}
+	}
+)
