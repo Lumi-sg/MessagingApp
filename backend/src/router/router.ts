@@ -21,6 +21,8 @@ router.post(
 router.get("/users", requireAuth, UserController.get_all_users);
 router.get("/user/:id", requireAuth, UserController.get_single_user);
 router.post("/addfriend", requireAuth, UserController.add_friend);
+router.post("/removefriend", requireAuth, UserController.remove_friend);
+router.get("/friends", requireAuth, UserController.get_all_friends);
 
 // Catch-all route for handling all other requests
 router.use((req, res) => {

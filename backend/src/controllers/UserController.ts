@@ -193,6 +193,14 @@ export const add_friend = asyncHandler(
 				res.status(400).send("Cannot add yourself as a friend");
 				return;
 			}
+			if (
+				user.friends.includes(friendID) ||
+				friend.friends.includes(userID)
+			) {
+				console.log("Already friends");
+				res.status(400).send("Already friends");
+				return;
+			}
 			user.friends.push(friendID);
 			friend.friends.push(userID);
 			await user.save();
@@ -201,6 +209,87 @@ export const add_friend = asyncHandler(
 		} catch (error: any) {
 			console.error("Error adding friend", error);
 			res.status(500).send(`Error adding friend: ${error.message}`);
+		}
+	}
+);
+
+export const remove_friend = asyncHandler(
+	async (req: express.Request, res: express.Response) => {
+		console.log("request received");
+
+		try {
+			const { userID, friendID } = req.body;
+			console.log(userID, friendID);
+			const user = await User.findById(userID).select("-password");
+			const friend = await User.findById(friendID).select("-password");
+			console.log(user, friend);
+			if (!user || !friend) {
+				console.log("User or friend not found");
+				res.status(404).send("User or friend not found");
+				return;
+			}
+			if (user._id === friend._id) {
+				console.log("Cannot remove yourself as a friend");
+				res.status(400).send("Cannot remove yourself as a friend");
+				return;
+			}
+			if (
+				!user.friends.includes(friendID) ||
+				!friend.friends.includes(userID)
+			) {
+				console.log("Not friends");
+				res.status(400).send("Not friends");
+				return;
+			}
+
+			user.friends = user.friends.filter((id) => !id.equals(friendID));
+			friend.friends = friend.friends.filter((id) => !id.equals(userID));
+			try {
+				const savedUser = await user.save();
+				const savedFriend = await friend.save();
+				if (!savedUser || !savedFriend) {
+					console.log("Error removing friend");
+					res.status(500).send("Error removing friend");
+					return;
+				}
+				res.status(200).send(
+					`${friend.username} removed from ${user.username}'s friends list.`
+				);
+			} catch (error: any) {
+				console.error("Error removing friend", error);
+				res.status(500).send(`Error removing friend: ${error.message}`);
+				return;
+			}
+		} catch (error: any) {
+			console.error("Error removing friend", error);
+			res.status(500).send(`Error removing friend: ${error.message}`);
+			return;
+		}
+	}
+);
+
+export const get_all_friends = asyncHandler(
+	async (req: express.Request, res: express.Response) => {
+		try {
+			if (!req.user) {
+				return;
+			}
+
+			const user = await User.findById((req.user as any).userId).select(
+				"-password"
+			);
+
+			if (!user) {
+				console.log("User not found");
+				res.status(404).send("User not found");
+				return;
+			}
+			const friends = await User.find({ _id: { $in: user.friends } });
+			console.log(`Found ${friends.length} friends`);
+			res.status(200).json(friends);
+		} catch (error: any) {
+			console.error("Error getting all friends", error);
+			res.status(500).send(`Error getting all friends: ${error.message}`);
 		}
 	}
 );

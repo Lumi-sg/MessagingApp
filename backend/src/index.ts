@@ -23,7 +23,7 @@ app.use(
 );
 
 app.use(compression());
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 
 //DB Stuff
 const MONGO_URL = process.env.MONGO_DB_URL;
