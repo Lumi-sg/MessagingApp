@@ -188,6 +188,11 @@ export const add_friend = asyncHandler(
 				res.status(404).send("User or friend not found");
 				return;
 			}
+			if (user._id === friend._id) {
+				console.log("Cannot add yourself as a friend");
+				res.status(400).send("Cannot add yourself as a friend");
+				return;
+			}
 			user.friends.push(friendID);
 			friend.friends.push(userID);
 			await user.save();
@@ -198,4 +203,4 @@ export const add_friend = asyncHandler(
 			res.status(500).send(`Error adding friend: ${error.message}`);
 		}
 	}
-)
+);
