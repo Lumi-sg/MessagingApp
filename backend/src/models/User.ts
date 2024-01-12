@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema, Types } from "mongoose";
 
 export type UserType = Document & {
-	_id: Types.ObjectId;
+	_id?: Types.ObjectId;
 	username: string;
 	password: string;
 	friends: UserType[];
@@ -11,7 +11,6 @@ export type UserType = Document & {
 };
 
 const userSchema = new Schema<UserType>({
-	_id: { type: Types.ObjectId, required: true },
 	username: {
 		type: String,
 		required: true,

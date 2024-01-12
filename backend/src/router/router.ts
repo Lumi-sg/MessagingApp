@@ -18,9 +18,9 @@ router.post(
 	requireAuth,
 	UserController.update_user_status_post
 );
-router.get("/users", UserController.get_all_users);
-router.get("/user/:id", UserController.get_single_user);
-
+router.get("/users", requireAuth, UserController.get_all_users);
+router.get("/user/:id", requireAuth, UserController.get_single_user);
+router.post("/addfriend", requireAuth, UserController.add_friend);
 
 // Catch-all route for handling all other requests
 router.use((req, res) => {
