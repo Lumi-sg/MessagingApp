@@ -31,7 +31,11 @@ router.get("/friends", requireAuth, UserController.get_all_friends);
 
 //Message Routes
 router.get("/conversations", requireAuth, MessageController.get_conversations);
-
+router.post(
+	"/createconversation",
+	requireAuth,
+	MessageController.create_conversation
+);
 // Catch-all route for handling all other requests
 router.use((req, res) => {
 	const error = new Error("Not Found");
