@@ -36,6 +36,11 @@ router.post(
 	requireAuth,
 	MessageController.create_conversation
 );
+router.post(
+	"/deleteconversation",
+	requireAuth,
+	MessageController.delete_conversation
+);
 // Catch-all route for handling all other requests
 router.use((req, res) => {
 	const error = new Error("Not Found");
