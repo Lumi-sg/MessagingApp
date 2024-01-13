@@ -8,21 +8,28 @@ const router = express.Router();
 router.get("/", (req, res) => {
 	res.render("index");
 });
-
-//User Routes
+//Onboard/offboard Routes
 router.post("/signup", UserController.create_user_post);
 router.post("/login", UserController.login_user_post);
 router.post("/logout", requireAuth, UserController.logout_user_post);
+
+//User Routes
+
 router.post(
-	"/update-status",
+	"/updatestatus",
 	requireAuth,
 	UserController.update_user_status_post
 );
 router.get("/users", requireAuth, UserController.get_all_users);
 router.get("/user/:id", requireAuth, UserController.get_single_user);
+
+//Friend Routes
 router.post("/addfriend", requireAuth, UserController.add_friend);
 router.post("/removefriend", requireAuth, UserController.remove_friend);
 router.get("/friends", requireAuth, UserController.get_all_friends);
+
+//Message Routes
+
 
 // Catch-all route for handling all other requests
 router.use((req, res) => {
