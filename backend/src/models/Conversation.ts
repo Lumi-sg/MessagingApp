@@ -19,7 +19,7 @@ const conversationSchema = new Schema<ConversationType>({
 	messages: [{ type: Types.ObjectId, ref: "Message" }],
 });
 
-const Conversation = mongoose.model<ConversationType>(
+export const Conversation = mongoose.model<ConversationType>(
 	"Conversation",
 	conversationSchema
 );

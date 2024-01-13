@@ -13,6 +13,6 @@ const messageSchema = new Schema<MessageType>({
 	timestamp: { type: Date, default: Date.now },
 });
 
-const Message = mongoose.model<MessageType>("Message", messageSchema);
+export const Message = mongoose.model<MessageType>("Message", messageSchema);
 
 export default Message;

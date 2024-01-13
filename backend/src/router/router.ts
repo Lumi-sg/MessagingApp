@@ -1,5 +1,6 @@
 import express from "express";
 import * as UserController from "../controllers/UserController";
+import * as MessageController from "../controllers/MessagingController";
 import requireAuth from "../middleware/requireAuth";
 
 const router = express.Router();
@@ -29,7 +30,7 @@ router.post("/removefriend", requireAuth, UserController.remove_friend);
 router.get("/friends", requireAuth, UserController.get_all_friends);
 
 //Message Routes
-
+router.get("/conversations", requireAuth, MessageController.get_conversations);
 
 // Catch-all route for handling all other requests
 router.use((req, res) => {
