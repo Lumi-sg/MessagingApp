@@ -34,36 +34,6 @@ export const get_conversations = asyncHandler(
 	}
 );
 
-export const get_conversation = asyncHandler(
-	async (req: express.Request, res: express.Response) => {
-		try {
-			if (!req.user) {
-				return;
-			}
-			const user = await User.findById((req.user as any).userId).select(
-				"-password"
-			);
-			if (!user) {
-				console.log("User not found");
-				res.status(404).send("User not found");
-				return;
-			}
-			const conversation = await Conversation.findById(req.params.id);
-			if (!conversation) {
-				console.log("Conversation not found");
-				res.status(404).send("Conversation not found");
-				return;
-			}
-			res.status(200).json(conversation);
-		} catch (error: any) {
-			console.error("Error getting conversation", error);
-			res.status(500).send(
-				`Error getting conversation: ${error.message}`
-			);
-		}
-	}
-);
-
 export const create_conversation = [
 	body("conversationTitle")
 		.trim()
