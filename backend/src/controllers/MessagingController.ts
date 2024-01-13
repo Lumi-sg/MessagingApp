@@ -101,18 +101,36 @@ export const create_conversation = [
 				);
 				return;
 			}
+			try {
+				const sender = await User.findById(senderUserID);
+				const receiver = await User.findById(receiverUserID);
 
-			const conversation = new Conversation({
-				conversationTitle,
-				participants: [senderUserID, receiverUserID],
-			});
-			await conversation.save();
-			console.log(
-				`Conversation with participants ${senderUserID} and ${receiverUserID}created with ID ${conversation._id}`
-			);
-			res.status(201).send("Conversation created");
+				if (!sender) {
+					console.log("Sender not found");
+					res.status(404).send("Sender not found");
+					return;
+				}
 
-			if (!req.user) {
+				if (!receiver) {
+					console.log("Receiver not found");
+					res.status(404).send("Receiver not found");
+					return;
+				}
+
+				const conversation = new Conversation({
+					conversationTitle,
+					participants: [senderUserID, receiverUserID],
+				});
+				await conversation.save();
+				console.log(
+					`Conversation with participants ${senderUserID} and ${receiverUserID}created with ID ${conversation._id}`
+				);
+				res.status(201).send("Conversation created");
+			} catch (error: any) {
+				console.error("Error identifying sender and receiver", error);
+				res.status(500).send(
+					`Error identifying sender and receiver: ${error.message}`
+				);
 				return;
 			}
 		} catch (error: any) {
