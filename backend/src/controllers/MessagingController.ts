@@ -90,6 +90,7 @@ export const create_conversation = [
 				const conversation = new Conversation({
 					conversationTitle,
 					participants: [senderUserID, receiverUserID],
+                    messages: [],
 				});
 				await conversation.save();
 				console.log(
