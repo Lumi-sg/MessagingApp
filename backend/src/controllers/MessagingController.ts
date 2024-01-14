@@ -155,10 +155,26 @@ export const leave_conversation = asyncHandler(
 		}
 	}
 );
-export const edit_conversation_title = asyncHandler(
-	async (req: express.Request, res: express.Response) => {
+export const edit_conversation_title = [
+	body("conversationTitle")
+		.trim()
+		.notEmpty()
+		.withMessage("Please enter a conversation title")
+		.isLength({ max: 50 })
+		.withMessage("Conversation title must be 50 characters or less")
+		.isLength({ min: 1 })
+		.withMessage("Conversation title must be at least 1 character long"),
+	asyncHandler(async (req: express.Request, res: express.Response) => {
 		try {
-			const { conversationID, userID, newTitle } = req.body;
+			const errors = validationResult(req);
+			const { conversationID, userID, conversationTitle } = req.body;
+
+			if (!errors.isEmpty()) {
+				console.log("Validation errors", errors.array());
+				res.status(400).send(errors);
+				return;
+			}
+
 			if (!conversationID) {
 				console.log("Conversation not provided");
 				res.status(404).send("Conversation not provided");
@@ -186,7 +202,7 @@ export const edit_conversation_title = asyncHandler(
 			}
 
 			if (conversation.participants.includes(user)) {
-				conversation.conversationTitle = newTitle;
+				conversation.conversationTitle = conversationTitle;
 				await conversation.save();
 				res.status(200).send("Conversation title edited");
 			} else {
@@ -200,6 +216,108 @@ export const edit_conversation_title = asyncHandler(
 			res.status(500).send(
 				`Error editting conversation title: ${error.message}`
 			);
+		}
+	}),
+];
+export const create_message = [
+	body("content")
+		.trim()
+		.notEmpty()
+		.withMessage("Please enter a message")
+		.isLength({ max: 500 })
+		.withMessage("Message must be 500 characters or less")
+		.isLength({ min: 1 })
+		.withMessage("Message must be at least 1 character long"),
+	asyncHandler(async (req: express.Request, res: express.Response) => {
+		try {
+			const errors = validationResult(req);
+			const { conversationID, userID, content } = req.body;
+
+			if (!errors.isEmpty()) {
+				console.log("Validation errors", errors.array());
+				res.status(400).send(errors);
+				return;
+			}
+
+			if (!conversationID) {
+				console.log("Conversation not provided");
+				res.status(404).send("Conversation not provided");
+				return;
+			}
+
+			if (!userID) {
+				console.log("User not provided");
+				res.status(404).send("User not provided");
+				return;
+			}
+
+			const user = await User.findById(userID).select("-password");
+			if (!user) {
+				console.log("User not found");
+				res.status(404).send("User not found");
+				return;
+			}
+
+			const conversation = await Conversation.findById(conversationID);
+			if (!conversation) {
+				console.log("Conversation not found");
+				res.status(404).send("Conversation not found");
+				return;
+			}
+			if (!conversation.participants.includes(user)) {
+				console.log("User not a participant of the conversation");
+				res.status(400).send(
+					"User not a participant of the conversation"
+				);
+				return;
+			}
+
+			const message = new Message({
+				sender: user,
+				content: content,
+				timestamp: new Date(),
+			});
+			conversation.messages.push(message);
+			await conversation.save();
+			res.status(200).send("Message created");
+		} catch (error: any) {
+			console.error("Error creating message", error);
+			res.status(500).send(`Error creating message: ${error.message}`);
+		}
+	}),
+];
+
+export const delete_message = asyncHandler(
+	async (req: express.Request, res: express.Response) => {
+		try {
+			const { messageID, userID } = req.body;
+			if (!messageID) {
+				console.log("Message not found");
+				res.status(404).send("Message not found");
+				return;
+			}
+			const message = await Message.findById(messageID);
+			if (!message) {
+				console.log("Message not found");
+				res.status(404).send("Message not found");
+				return;
+			}
+			const user = await User.findById(userID).select("-password");
+			if (!user) {
+				console.log("User not found");
+				res.status(404).send("User not found");
+				return;
+			}
+			if (!message.sender.equals(user)) {
+				console.log("User not the sender of the message");
+				res.status(400).send("User not the sender of the message");
+				return;
+			}
+			await message.deleteOne();
+			res.status(200).send("Message deleted");
+		} catch (error: any) {
+			console.error("Error deleting message", error);
+			res.status(500).send(`Error deleting message: ${error.message}`);
 		}
 	}
 );
