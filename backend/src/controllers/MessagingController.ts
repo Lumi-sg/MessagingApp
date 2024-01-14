@@ -89,12 +89,12 @@ export const create_conversation = [
 
 				const conversation = new Conversation({
 					conversationTitle,
-					participants: [senderUserID, receiverUserID],
-                    messages: [],
+					participants: [sender, receiver],
+					messages: [],
 				});
 				await conversation.save();
 				console.log(
-					`Conversation with participants ${senderUserID} and ${receiverUserID}created with ID ${conversation._id}`
+					`Conversation with participants ${sender.username} and ${receiver.username}created with ID ${conversation._id}`
 				);
 				res.status(201).send("Conversation created");
 			} catch (error: any) {
