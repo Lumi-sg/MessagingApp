@@ -41,6 +41,13 @@ router.put(
 	requireAuth,
 	MessageController.leave_conversation
 );
+
+router.put(
+	"/editconversationtitle",
+	requireAuth,
+	MessageController.edit_conversation_title
+);
+
 // Catch-all route for handling all other requests
 router.use((req, res) => {
 	const error = new Error("Not Found");

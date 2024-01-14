@@ -72,8 +72,12 @@ export const create_conversation = [
 				return;
 			}
 			try {
-				const sender = await User.findById(senderUserID);
-				const receiver = await User.findById(receiverUserID);
+				const sender = await User.findById(senderUserID).select(
+					"-password"
+				);
+				const receiver = await User.findById(receiverUserID).select(
+					"-password"
+				);
 
 				if (!sender) {
 					console.log("Sender not found");
@@ -147,6 +151,54 @@ export const leave_conversation = asyncHandler(
 			console.error("Error deleting conversation", error);
 			res.status(500).send(
 				`Error deleting conversation: ${error.message}`
+			);
+		}
+	}
+);
+export const edit_conversation_title = asyncHandler(
+	async (req: express.Request, res: express.Response) => {
+		try {
+			const { conversationID, userID, newTitle } = req.body;
+			if (!conversationID) {
+				console.log("Conversation not provided");
+				res.status(404).send("Conversation not provided");
+				return;
+			}
+
+			if (!userID) {
+				console.log("User not provided");
+				res.status(404).send("User not provided");
+				return;
+			}
+
+			const user = await User.findById(userID).select("-password");
+			if (!user) {
+				console.log("User not found");
+				res.status(404).send("User not found");
+				return;
+			}
+
+			const conversation = await Conversation.findById(conversationID);
+			if (!conversation) {
+				console.log("Conversation not found");
+				res.status(404).send("Conversation not found");
+				return;
+			}
+
+			if (conversation.participants.includes(user)) {
+				conversation.conversationTitle = newTitle;
+				await conversation.save();
+				res.status(200).send("Conversation title edited");
+			} else {
+				console.log("User not a participant of the conversation");
+				res.status(400).send(
+					"User not a participant of the conversation"
+				);
+			}
+		} catch (error: any) {
+			console.error("Error editting conversation title", error);
+			res.status(500).send(
+				`Error editting conversation title: ${error.message}`
 			);
 		}
 	}
