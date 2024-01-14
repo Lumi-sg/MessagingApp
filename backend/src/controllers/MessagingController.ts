@@ -114,7 +114,7 @@ export const create_conversation = [
 	}),
 ];
 
-export const delete_conversation = asyncHandler(
+export const leave_conversation = asyncHandler(
 	async (req: express.Request, res: express.Response) => {
 		try {
 			const { userID, conversationID } = req.body;

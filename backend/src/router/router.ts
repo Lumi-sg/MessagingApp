@@ -36,10 +36,10 @@ router.post(
 	requireAuth,
 	MessageController.create_conversation
 );
-router.post(
-	"/deleteconversation",
+router.put(
+	"/leaveconversation",
 	requireAuth,
-	MessageController.delete_conversation
+	MessageController.leave_conversation
 );
 // Catch-all route for handling all other requests
 router.use((req, res) => {
