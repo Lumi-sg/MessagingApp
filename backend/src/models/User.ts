@@ -3,7 +3,6 @@ import mongoose, { Document, Schema, Types } from "mongoose";
 export type UserType = Document & {
 	_id?: Types.ObjectId;
 	username: string;
-	password: string;
 	friends: UserType[];
 	statusMessage: string;
 	age: number;
@@ -18,7 +17,6 @@ const userSchema = new Schema<UserType>({
 		minlength: 3,
 		maxlength: 15,
 	},
-	password: { type: String, required: true },
 	friends: [{ type: Types.ObjectId, ref: "User" }],
 	statusMessage: { type: String, maxlength: 50 },
 	age: { type: Number, min: 13, max: 100, required: true },

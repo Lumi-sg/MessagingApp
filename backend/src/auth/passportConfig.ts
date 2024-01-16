@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { User } from "../models/User";
+import { Password } from "../models/Password";
 
 passport.use(
 	new LocalStrategy(async (username: any, password: any, done: any) => {
@@ -11,8 +12,15 @@ passport.use(
 			if (!user) {
 				return done(null, false, { message: "Incorrect username." });
 			}
-
-			const match = await bcrypt.compare(password, user.password);
+			const userID = user._id;
+			const userPasswordObject = await Password.findOne({ userID: userID });
+			if (!userPasswordObject) {
+				return;
+			}
+			const match = await bcrypt.compare(
+				password,
+				userPasswordObject.password
+			);
 
 			if (!match) {
 				return done(null, false, { message: "Incorrect password." });

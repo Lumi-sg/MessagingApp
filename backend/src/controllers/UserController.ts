@@ -6,6 +6,7 @@ import passport from "passport";
 import { UserType, User } from "../models/User";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import Password from "../models/Password";
 
 dotenv.config();
 
@@ -46,11 +47,17 @@ export const create_user_post = [
 			const hashedPassword = await bcrypt.hash(password, 10);
 			const user = new User({
 				username,
-				password: hashedPassword,
 				age,
 				country,
 			});
+			const userPassword = new Password({
+				password: hashedPassword,
+				userID: user._id,
+			});
+
 			await user.save();
+			await userPassword.save();
+
 			res.status(201).send("User created");
 		} catch (error: any) {
 			console.error("Error creating user", error);
