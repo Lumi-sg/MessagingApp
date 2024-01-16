@@ -157,7 +157,7 @@ export const logout_user_post = (
 export const get_single_user = asyncHandler(
 	async (req: express.Request, res: express.Response) => {
 		try {
-			const user = await User.findById(req.params.id).select("-password");
+			const user = await User.findById(req.params.id);
 			if (!user) {
 				console.log("User not found");
 				res.status(404).send("User not found");
@@ -175,7 +175,7 @@ export const get_single_user = asyncHandler(
 export const get_all_users = asyncHandler(
 	async (req: express.Request, res: express.Response) => {
 		try {
-			const users = await User.find().select("-password -friends");
+			const users = await User.find().select("-friends");
 			res.status(200).json(users);
 		} catch (error: any) {
 			console.error("Error getting all users", error);
@@ -227,8 +227,8 @@ export const remove_friend = asyncHandler(
 		try {
 			const { userID, friendID } = req.body;
 			console.log(userID, friendID);
-			const user = await User.findById(userID).select("-password");
-			const friend = await User.findById(friendID).select("-password");
+			const user = await User.findById(userID);
+			const friend = await User.findById(friendID);
 			console.log(user, friend);
 			if (!user || !friend) {
 				console.log("User or friend not found");
