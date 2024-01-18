@@ -143,9 +143,10 @@ export const leave_conversation = asyncHandler(
 
 			await Conversation.findByIdAndUpdate(
 				conversationID,
-				{ $pull: { participants: user } },
+				{ $pull: { participants: user._id } },
 				{ new: true }
 			);
+			console.log(`User ${user} removed from conversation`);
 			res.status(200).send(`User ${user} removed from conversation`);
 		} catch (error: any) {
 			console.error("Error deleting conversation", error);
@@ -201,7 +202,7 @@ export const edit_conversation_title = [
 				return;
 			}
 
-			if (conversation.participants.includes(user)) {
+			if (conversation.participants.includes(user._id)) {
 				conversation.conversationTitle = conversationTitle;
 				await conversation.save();
 				res.status(200).send("Conversation title edited");
