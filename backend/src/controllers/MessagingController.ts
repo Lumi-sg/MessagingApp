@@ -252,7 +252,7 @@ export const create_message = [
 				return;
 			}
 
-			const user = await User.findById(userID).select("-password");
+			const user = await User.findById(userID);
 			if (!user) {
 				console.log("User not found");
 				res.status(404).send("User not found");
@@ -265,7 +265,7 @@ export const create_message = [
 				res.status(404).send("Conversation not found");
 				return;
 			}
-			if (!conversation.participants.includes(user)) {
+			if (!conversation.participants.includes(user._id)) {
 				console.log("User not a participant of the conversation");
 				res.status(400).send(
 					"User not a participant of the conversation"
