@@ -1,7 +1,11 @@
 import mongoose, { Document, Schema, Types } from "mongoose";
-import { MessageType } from "./Message";
+// import { MessageType } from "./Message";
 import { UserType } from "./User";
-
+export type MessageType = {
+	sender: UserType;
+	content: string;
+	timestamp: Date;
+};
 export type ConversationType = Document & {
 	conversationTitle: string;
 	participants: UserType[];
@@ -16,7 +20,7 @@ const conversationSchema = new Schema<ConversationType>({
 		minlength: 1,
 	},
 	participants: [{ type: Types.ObjectId, ref: "User", required: true }],
-	messages: [{ type: Types.ObjectId, ref: "Message" }],
+	messages: [{ type: Object, required: true }],
 });
 
 export const Conversation = mongoose.model<ConversationType>(

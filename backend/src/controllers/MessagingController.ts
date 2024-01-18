@@ -1,9 +1,8 @@
 import express, { response } from "express";
 import asyncHandler from "express-async-handler";
 import { body, validationResult } from "express-validator";
-import { UserType, User } from "../models/User";
-import { Message } from "../models/Message";
-import { Conversation } from "../models/Conversation";
+import { User } from "../models/User";
+import { Conversation, MessageType } from "../models/Conversation";
 
 export const get_conversations = asyncHandler(
 	async (req: express.Request, res: express.Response) => {
@@ -273,11 +272,11 @@ export const create_message = [
 				return;
 			}
 
-			const message = new Message({
+			const message: MessageType = {
 				sender: user,
 				content: content,
 				timestamp: new Date(),
-			});
+			};
 			conversation.messages.push(message);
 			await conversation.save();
 			res.status(200).send("Message created");
@@ -287,38 +286,3 @@ export const create_message = [
 		}
 	}),
 ];
-
-export const delete_message = asyncHandler(
-	async (req: express.Request, res: express.Response) => {
-		try {
-			const { messageID, userID } = req.body;
-			if (!messageID) {
-				console.log("Message not found");
-				res.status(404).send("Message not found");
-				return;
-			}
-			const message = await Message.findById(messageID);
-			if (!message) {
-				console.log("Message not found");
-				res.status(404).send("Message not found");
-				return;
-			}
-			const user = await User.findById(userID).select("-password");
-			if (!user) {
-				console.log("User not found");
-				res.status(404).send("User not found");
-				return;
-			}
-			if (!message.sender.equals(user)) {
-				console.log("User not the sender of the message");
-				res.status(400).send("User not the sender of the message");
-				return;
-			}
-			await message.deleteOne();
-			res.status(200).send("Message deleted");
-		} catch (error: any) {
-			console.error("Error deleting message", error);
-			res.status(500).send(`Error deleting message: ${error.message}`);
-		}
-	}
-);
