@@ -222,14 +222,10 @@ export const add_friend = asyncHandler(
 
 export const remove_friend = asyncHandler(
 	async (req: express.Request, res: express.Response) => {
-		console.log("request received");
-
 		try {
 			const { userID, friendID } = req.body;
-			console.log(userID, friendID);
 			const user = await User.findById(userID);
 			const friend = await User.findById(friendID);
-			console.log(user, friend);
 			if (!user || !friend) {
 				console.log("User or friend not found");
 				res.status(404).send("User or friend not found");
