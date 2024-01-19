@@ -16,10 +16,10 @@ export const BASEURL = "http://localhost:3000";
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <Navigate to="/index" />,
+		element: <Navigate to="/login" />,
 	},
 	{
-		path: "/index",
+		path: "/login",
 		element: <Login />,
 		errorElement: <ErrorPage />,
 	},
