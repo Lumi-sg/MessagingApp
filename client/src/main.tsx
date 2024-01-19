@@ -8,6 +8,7 @@ import {
 import ErrorPage from "./components/ErrorPage/ErrorPage.tsx";
 import Loading from "./components/Loading/Loading.tsx";
 import Login from "./components/Login/Login.tsx";
+import Index from "./components/Index/Dashboard.tsx";
 import "./main.css";
 import "./reset.css";
 
@@ -21,6 +22,11 @@ const router = createBrowserRouter([
 	{
 		path: "/login",
 		element: <Login />,
+		errorElement: <ErrorPage />,
+	},
+	{
+		path: "/dashboard",
+		element: <Index />,
 		errorElement: <ErrorPage />,
 	},
 ]);
