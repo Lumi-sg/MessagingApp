@@ -1,7 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
-import "./index.css";
 import {
 	createBrowserRouter,
 	Navigate,
@@ -9,6 +7,9 @@ import {
 } from "react-router-dom";
 import ErrorPage from "./components/ErrorPage/ErrorPage.tsx";
 import Loading from "./components/Loading/Loading.tsx";
+import Login from "./components/Login/Login.tsx";
+import "./main.css";
+import "./reset.css";
 
 export const BASEURL = "http://localhost:3000";
 
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
 	},
 	{
 		path: "/index",
-		element: <App />,
+		element: <Login />,
 		errorElement: <ErrorPage />,
 	},
 ]);
