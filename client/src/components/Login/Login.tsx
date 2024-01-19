@@ -1,8 +1,12 @@
 import Footer from "../Footer/Footer";
 import "./login.css";
 import { BASEURL } from "../../main";
+import { User as UserType } from "../../types/User";
+import { useUserStore } from "../../stores/userStore";
 
 const Login = () => {
+	const { setUser, setIsLoggedIn } = useUserStore();
+
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
 
@@ -10,7 +14,6 @@ const Login = () => {
 		const username = formData.get("username");
 		const password = formData.get("password");
 
-		// Perform your login request
 		try {
 			const response = await fetch(`${BASEURL}/login`, {
 				method: "POST",
@@ -22,9 +25,14 @@ const Login = () => {
 
 			if (response.ok) {
 				// Redirect to a new page upon successful login
-				window.location.href = "/dashboard"; // Replace '/dashboard' with your desired URL
+				const data = await response.json();
+				const userResponse = data.user as UserType;
+
+				setUser(userResponse);
+				setIsLoggedIn(true);
+
+				window.location.href = "/dashboard";
 			} else {
-				// Handle login error
 				console.error("Login failed");
 			}
 		} catch (error) {
@@ -50,6 +58,7 @@ const Login = () => {
 					</div>
 				</form>
 			</div>
+			<Footer />
 		</div>
 	);
 };

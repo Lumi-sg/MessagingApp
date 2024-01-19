@@ -6,3 +6,5 @@ export type User = {
 	age: number;
 	country: string;
 };
+
+export default User;
