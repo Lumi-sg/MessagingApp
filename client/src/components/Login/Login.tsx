@@ -3,9 +3,11 @@ import "./login.css";
 import { BASEURL } from "../../main";
 import { User as UserType } from "../../types/User";
 import { useUserStore } from "../../stores/userStore";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
 	const { setUser, setIsLoggedIn } = useUserStore();
+	const navigate = useNavigate();
 
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
@@ -25,13 +27,9 @@ const Login = () => {
 
 			if (response.ok) {
 				// Redirect to a new page upon successful login
-				const data = await response.json();
-				const userResponse = data.user as UserType;
+				await saveLoginData(response, setUser, setIsLoggedIn);
 
-				setUser(userResponse);
-				setIsLoggedIn(true);
-
-				window.location.href = "/dashboard";
+				navigate("/dashboard");
 			} else {
 				console.error("Login failed");
 			}
@@ -64,3 +62,12 @@ const Login = () => {
 };
 
 export default Login;
+async function saveLoginData(response: Response, setUser: (user: UserType) => void, setIsLoggedIn: (isLoggedIn: boolean) => void) {
+	const data = await response.json();
+	localStorage.setItem("token", data.token);
+	const userResponse = data.user as UserType;
+
+	setUser(userResponse);
+	setIsLoggedIn(true);
+}
+
