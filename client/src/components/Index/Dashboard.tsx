@@ -6,7 +6,13 @@ const Dashboard = () => {
 	useEffect(() => {
 		console.table(user);
 	}, []);
-	return <div>Dashboard</div>;
+	return (
+		<div className="mainContainer">
+			<div className="dashboardContainer">
+				<h1>Welcome {user!.username}</h1>
+			</div>
+		</div>
+	);
 };
 
 export default Dashboard;
