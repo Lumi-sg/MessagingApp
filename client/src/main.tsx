@@ -27,6 +27,30 @@ const router = createBrowserRouter([
 	{
 		path: "/dashboard",
 		element: <Index />,
+		loader: async () => {
+			// Step 1: Retrieve the token from local storage
+			const token = localStorage.getItem("token"); // Replace with your actual storage key
+
+			if (!token) {
+				// Handle the case where the token is not available
+				return Promise.reject("No token available");
+			}
+
+			// Step 2: Use the retrieved token in the fetch request
+			const response = await fetch(`${BASEURL}/conversations`, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+
+			if (!response.ok) {
+				// Handle the case where the API call is not successful
+				return Promise.reject("Failed to fetch conversations");
+			}
+
+			return response.json();
+		},
+		id: "conversations",
 		errorElement: <ErrorPage />,
 	},
 ]);

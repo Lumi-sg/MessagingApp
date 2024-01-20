@@ -1,16 +1,21 @@
 import React, { useEffect } from "react";
 import { useUserStore } from "../../stores/userStore";
+import Footer from "../Footer/Footer";
+import { useRouteLoaderData } from "react-router-dom";
 
 const Dashboard = () => {
 	const { user } = useUserStore();
-	useEffect(() => {
-		console.table(user);
-	}, []);
+  const response = useRouteLoaderData("conversations");
+
 	return (
 		<div className="mainContainer">
 			<div className="dashboardContainer">
-				<h1>Welcome {user!.username}</h1>
+				<div className="greetingContainer">
+					<h1>Welcome {user!.username}</h1>
+          
+				</div>
 			</div>
+			<Footer />
 		</div>
 	);
 };
