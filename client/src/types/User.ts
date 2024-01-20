@@ -7,4 +7,6 @@ export type User = {
 	country: string;
 };
 
+
+
 export default User;

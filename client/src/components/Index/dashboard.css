@@ -35,16 +35,23 @@
 	border-bottom: 1px solid white;
 }
 
-.singleConversationContainer{
-	height: 5%;
+.singleConversationContainer {
+	height: 7.5%;
 	width: 100%;
 	background-color: #202020;
-	border-bottom: 1px solid white;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.124);
 	display: flex;
 	justify-content: flex-start;
+	align-items: center;
 }
 
+.conversationTitle {
+	font-weight: bold;
+	font-size: 1.2rem;
+	text-decoration: underline;
+	margin-left: 2rem;
+}
 
-.conversationTitle{
-	margin-left: 1rem;
+.conversationTitle:hover {
+	cursor: pointer;
 }

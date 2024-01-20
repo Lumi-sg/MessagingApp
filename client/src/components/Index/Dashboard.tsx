@@ -21,11 +21,6 @@ const Dashboard = () => {
 						<p className="conversationTitle">
 							{conversation.conversationTitle}
 						</p>
-						<p className="participants">
-							{conversation.participants.map((participant) => (
-								<span>{participant.username}</span>
-							))}
-						</p>
 					</div>
 				))}
 			</div>
