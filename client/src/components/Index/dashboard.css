@@ -33,6 +33,13 @@
 	width: 100%;
 	background-color: #202020;
 	border-bottom: 1px solid white;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.conversationParticipantsNames > span {
+	margin-right: 1rem;
 }
 
 .singleConversationContainer {
@@ -54,4 +61,13 @@
 
 .conversationTitle:hover {
 	cursor: pointer;
+}
+.conversationContentContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+	overflow: auto;
 }

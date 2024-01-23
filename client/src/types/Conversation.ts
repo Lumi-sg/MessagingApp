@@ -8,6 +8,6 @@ export type Message = {
 export type Conversation = {
 	_id?: string;
 	conversationTitle: string;
-	participants: User[];
+	participants: User[] | string[];
 	messages: Message[];
 };
