@@ -33,6 +33,7 @@ const router = createBrowserRouter([
 			if (!token) {
 				throw new Error("No token available");
 			}
+
 			try {
 				const response = await fetch(`${BASEURL}/conversations`, {
 					headers: {

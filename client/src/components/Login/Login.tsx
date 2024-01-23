@@ -4,10 +4,12 @@ import { BASEURL } from "../../main";
 import { User as UserType } from "../../types/User";
 import { useUserStore } from "../../stores/userStore";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Login = () => {
 	const { setUser, setIsLoggedIn } = useUserStore();
 	const navigate = useNavigate();
+	const [error, setError] = useState<string | null>(null);
 
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
@@ -32,6 +34,8 @@ const Login = () => {
 				navigate("/dashboard");
 			} else {
 				console.error("Login failed");
+				console.log(response);
+				setError("Incorrect username/password");
 			}
 		} catch (error) {
 			console.error("Login error:", error);
@@ -54,6 +58,7 @@ const Login = () => {
 						<button type="submit">Login</button>
 						<button>Signup</button>
 					</div>
+					{error && <div style={{ color: "red" }}>{error}</div>}
 				</form>
 			</div>
 			<Footer />
@@ -62,7 +67,11 @@ const Login = () => {
 };
 
 export default Login;
-async function saveLoginData(response: Response, setUser: (user: UserType) => void, setIsLoggedIn: (isLoggedIn: boolean) => void) {
+async function saveLoginData(
+	response: Response,
+	setUser: (user: UserType) => void,
+	setIsLoggedIn: (isLoggedIn: boolean) => void
+) {
 	const data = await response.json();
 	localStorage.setItem("token", data.token);
 	const userResponse = data.user as UserType;
@@ -70,4 +79,3 @@ async function saveLoginData(response: Response, setUser: (user: UserType) => vo
 	setUser(userResponse);
 	setIsLoggedIn(true);
 }
-
