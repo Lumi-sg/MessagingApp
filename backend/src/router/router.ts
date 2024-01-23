@@ -50,10 +50,4 @@ router.put(
 
 router.post("/createmessage", requireAuth, MessageController.create_message);
 
-// Catch-all route for handling all other requests
-router.use((req, res) => {
-	const error = new Error("Not Found");
-	res.status(404).render("error", { error });
-});
-
 export default router;
