@@ -65,7 +65,7 @@
 .conversationContentContainer {
 	display: flex;
 	flex-direction: column;
-	height:70%;
+	height:73%;
 	width: 100%;
 	overflow-y: auto;
 }
@@ -116,6 +116,6 @@
 	justify-content: center;
 	align-items: center;
 	bottom: 0;
-	position: sticky;
+	position: absolute;
 	border-top: 1px solid white;
 }

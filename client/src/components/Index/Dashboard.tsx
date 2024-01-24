@@ -7,7 +7,7 @@ import { BASEURL } from "../../main";
 import { User } from "../../types/User";
 import { createNewCachedParticipant } from "../../helpers/createNewCachedParticipant";
 import { dateFormatter } from "../../helpers/dateFormatter";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const Dashboard = () => {
 	const { user } = useUserStore();
@@ -16,13 +16,21 @@ const Dashboard = () => {
 	const conversations = useRouteLoaderData("conversations") as Conversation[];
 	const [isConversationOpen, setisConversationOpen] = useState(false);
 	const [message, setMessage] = useState("");
+	const contentContainerRef = useRef<HTMLDivElement>(null);
 
-	const handleConversationClick = (conversation: Conversation) => {
-		setCurrentConversation(conversation);
-		conversation.participants.forEach((participant) => {
-			fetchParticipantNames(participant as string);
-		});
+	const handleConversationClick = async (conversation: Conversation) => {
 		setisConversationOpen(true);
+		setCurrentConversation(conversation);
+		await Promise.all(
+			conversation.participants.map((participant) =>
+				fetchParticipantNames(participant as string)
+			)
+		);
+
+		if (contentContainerRef.current) {
+			contentContainerRef.current.scrollTop =
+				contentContainerRef.current.scrollHeight;
+		}
 	};
 
 	const fetchParticipantNames = async (participant: String) => {
@@ -100,7 +108,10 @@ const Dashboard = () => {
 						)}
 					</div>
 				</div>
-				<div className="conversationContentContainer">
+				<div
+					className="conversationContentContainer"
+					ref={contentContainerRef}
+				>
 					{currentConversation?.messages.map(
 						(message: Message, index) => (
 							<div
