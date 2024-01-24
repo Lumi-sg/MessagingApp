@@ -5,15 +5,12 @@ import "./dashboard.css";
 import { Conversation, Message } from "../../types/Conversation";
 import { BASEURL } from "../../main";
 import { User } from "../../types/User";
+import { createNewCachedParticipant } from "../../helpers/createNewCachedParticipant";
 
 const Dashboard = () => {
 	const { user } = useUserStore();
-	const {
-		currentConversation,
-		setCurrentConversation,
-		cachedParticipants,
-		setCachedParticipants,
-	} = useConversationStore();
+	const { currentConversation, setCurrentConversation, cachedParticipants } =
+		useConversationStore();
 	const conversations = useRouteLoaderData("conversations") as Conversation[];
 
 	const handleConversationClick = (conversation: Conversation) => {
@@ -24,6 +21,15 @@ const Dashboard = () => {
 	};
 
 	const fetchParticipantNames = async (participant: String) => {
+		if (
+			// Check if the participant is already in the cachedParticipants
+			cachedParticipants.some(
+				(cachedParticipant) => cachedParticipant.userID === participant
+			)
+		) {
+			console.log("Participant is cached, skipping fetch");
+			return;
+		}
 		try {
 			const response = await fetch(`${BASEURL}/user/${participant}`, {
 				headers: {
@@ -33,7 +39,7 @@ const Dashboard = () => {
 
 			if (response.ok) {
 				const data = (await response.json()) as User;
-				createNewParticipant(
+				createNewCachedParticipant(
 					participant.toString(),
 					data.username.toString()
 				);
@@ -43,28 +49,7 @@ const Dashboard = () => {
 		}
 	};
 
-	const createNewParticipant = (userID: string, username: string) => {
-		const newUser = {
-			userID,
-			username,
-		};
-
-		const participantExists = cachedParticipants.some(
-			(participant) =>
-				participant.userID === newUser.userID &&
-				participant.username === newUser.username
-		);
-
-		if (participantExists) {
-			return;
-		}
-
-		const updatedParticipants = [...cachedParticipants, newUser];
-		console.table(updatedParticipants);
-		setCachedParticipants(updatedParticipants);
-	};
-
-	const getUsername = (participantID: string): string | undefined => {
+	const getCachedUsername = (participantID: string): string | undefined => {
 		const matchingParticipant = cachedParticipants.find(
 			(cachedParticipant) => cachedParticipant.userID === participantID
 		);
@@ -98,13 +83,13 @@ const Dashboard = () => {
 					<p className="conversationTitle">
 						{currentConversation?.conversationTitle}
 					</p>
-					<p className="conversationParticipantsLength">{`Participants: ${currentConversation?.participants.length}`}</p>
 					<div className="conversationParticipantsNames">
 						{currentConversation?.participants.map(
 							(participantID, index) => (
 								<span key={index}>
-									{getUsername(participantID.toString()) ||
-										"Unknown User"}
+									{getCachedUsername(
+										participantID.toString()
+									) || "Unknown User"}
 								</span>
 							)
 						)}
@@ -119,6 +104,7 @@ const Dashboard = () => {
 						)
 					)}
 				</div>
+				<div className="messageInputContainer">Your Message Here</div>
 			</div>
 		</div>
 	);
