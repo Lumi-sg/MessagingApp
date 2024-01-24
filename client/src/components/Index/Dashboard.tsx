@@ -103,7 +103,14 @@ const Dashboard = () => {
 				<div className="conversationContentContainer">
 					{currentConversation?.messages.map(
 						(message: Message, index) => (
-							<div className="messageCard">
+							<div
+								className={`messageCard ${
+									message.sender.username === user!.username
+										? "currentUserMessage"
+										: "otherUserMessage"
+								}`}
+								key={index}
+							>
 								<p className="messageUsername">
 									{message.sender.username}
 								</p>
