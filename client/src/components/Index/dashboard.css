@@ -71,7 +71,7 @@
 }
 
 .messageCard {
-	height: 5%;
+	height: 10%;
 	max-height: 50%;
 	max-width: 50%;
 	width: 25%;
@@ -84,9 +84,21 @@
 	border: 1px solid white;
 	border-radius: 10px;
 }
-
+.messageCard .messageUsername {
+	margin-left: 1rem;
+	margin-bottom: 1rem;
+	text-decoration: underline;
+	font-weight: bold;
+}
 .messageCard .message {
 	margin-left: 1rem;
+}
+
+.messageCard .messageTimestamp {
+	margin-left: 1rem;
+	margin-top: 1rem;
+	font-size: 0.8rem;
+	color: rgba(255, 255, 255, 0.635);
 }
 .messageInputContainer {
 	height: 5%;

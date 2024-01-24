@@ -6,6 +6,7 @@ import { Conversation, Message } from "../../types/Conversation";
 import { BASEURL } from "../../main";
 import { User } from "../../types/User";
 import { createNewCachedParticipant } from "../../helpers/createNewCachedParticipant";
+import { dateFormatter } from "../../helpers/dateFormatter";
 import { useState } from "react";
 
 const Dashboard = () => {
@@ -110,7 +111,9 @@ const Dashboard = () => {
 									{message.content}
 								</p>
 								<p className="messageTimestamp">
-									{message.timestamp.toString()}
+									{dateFormatter(
+										message.timestamp.toString()
+									)}
 								</p>
 							</div>
 						)
