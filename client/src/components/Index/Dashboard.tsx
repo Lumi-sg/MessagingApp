@@ -6,18 +6,22 @@ import { Conversation, Message } from "../../types/Conversation";
 import { BASEURL } from "../../main";
 import { User } from "../../types/User";
 import { createNewCachedParticipant } from "../../helpers/createNewCachedParticipant";
+import { useState } from "react";
 
 const Dashboard = () => {
 	const { user } = useUserStore();
 	const { currentConversation, setCurrentConversation, cachedParticipants } =
 		useConversationStore();
 	const conversations = useRouteLoaderData("conversations") as Conversation[];
+	const [isConversationOpen, setisConversationOpen] = useState(false);
+	const [message, setMessage] = useState("");
 
 	const handleConversationClick = (conversation: Conversation) => {
 		setCurrentConversation(conversation);
 		conversation.participants.forEach((participant) => {
 			fetchParticipantNames(participant as string);
 		});
+		setisConversationOpen(true);
 	};
 
 	const fetchParticipantNames = async (participant: String) => {
@@ -98,13 +102,25 @@ const Dashboard = () => {
 				<div className="conversationContentContainer">
 					{currentConversation?.messages.map(
 						(message: Message, index) => (
-							<p className="message" key={index}>
-								{message.content}
-							</p>
+							<div className="messageCard">
+								<p className="messageUsername">
+									{message.sender.username}
+								</p>
+								<p className="message" key={index}>
+									{message.content}
+								</p>
+								<p className="messageTimestamp">
+									{message.timestamp.toString()}
+								</p>
+							</div>
 						)
 					)}
 				</div>
-				<div className="messageInputContainer">Your Message Here</div>
+				{isConversationOpen && (
+					<div className="messageInputContainer">
+						Your Message Here
+					</div>
+				)}
 			</div>
 		</div>
 	);
