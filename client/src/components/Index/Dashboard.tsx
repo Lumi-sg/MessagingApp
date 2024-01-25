@@ -16,7 +16,7 @@ const Dashboard = () => {
 	const conversations = useRouteLoaderData("conversations") as Conversation[];
 	const [isConversationOpen, setisConversationOpen] = useState(false);
 	const [message, setMessage] = useState("");
-	const contentContainerRef = useRef<HTMLDivElement>(null);
+	const scrollToBottom = useRef<HTMLDivElement>(null);
 
 	const handleConversationClick = async (conversation: Conversation) => {
 		setisConversationOpen(true);
@@ -27,9 +27,8 @@ const Dashboard = () => {
 			)
 		);
 
-		if (contentContainerRef.current) {
-			contentContainerRef.current.scrollTop =
-				contentContainerRef.current.scrollHeight;
+		if (scrollToBottom.current) {
+			scrollToBottom.current.scrollIntoView({ behavior: "smooth" });
 		}
 	};
 
@@ -108,10 +107,7 @@ const Dashboard = () => {
 						)}
 					</div>
 				</div>
-				<div
-					className="conversationContentContainer"
-					ref={contentContainerRef}
-				>
+				<div className="conversationContentContainer">
 					{currentConversation?.messages.map(
 						(message: Message, index) => (
 							<div
@@ -136,6 +132,7 @@ const Dashboard = () => {
 							</div>
 						)
 					)}
+					<div ref={scrollToBottom}></div>
 				</div>
 				{isConversationOpen && (
 					<div className="messageInputContainer">
