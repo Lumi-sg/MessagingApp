@@ -7,6 +7,7 @@ import { fetchParticipantNames } from "../../helpers/fetchParticipantNames";
 import { useRef, useState } from "react";
 import { getCachedUsername } from "../../helpers/getCachedUsername";
 import MessageElement from "./Message/MessageElement";
+import MessageInput from "./MessageInput/MessageInput";
 
 const Dashboard = () => {
 	const { user } = useUserStore();
@@ -81,9 +82,7 @@ const Dashboard = () => {
 					<div ref={scrollToBottom}></div>
 				</div>
 				{isConversationOpen && (
-					<div className="messageInputContainer">
-						Your Message Here
-					</div>
+					<MessageInput />
 				)}
 			</div>
 		</div>
