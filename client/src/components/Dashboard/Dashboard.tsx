@@ -8,6 +8,7 @@ import { useRef, useState } from "react";
 import { getCachedUsername } from "../../helpers/getCachedUsername";
 import MessageElement from "./Message/MessageElement";
 import MessageInput from "./MessageInput/MessageInput";
+import Sidebar from "./Sidebar/Sidebar";
 
 const Dashboard = () => {
 	const { user } = useUserStore();
@@ -33,25 +34,10 @@ const Dashboard = () => {
 
 	return (
 		<div className="dashboardContainer">
-			<div className="sideBarContainer">
-				<div className="topRowContainer">
-					<button>Logout</button>
-					<h1>{user!.username}</h1>
-					<button>+</button>
-				</div>
-				{conversations.map((conversation: Conversation, index) => (
-					<div className="singleConversationContainer" key={index}>
-						<p
-							className="conversationTitle"
-							onClick={() =>
-								handleConversationClick(conversation)
-							}
-						>
-							{conversation.conversationTitle}
-						</p>
-					</div>
-				))}
-			</div>
+			<Sidebar
+				conversations={conversations}
+				handleConversationClick={handleConversationClick}
+			/>
 			<div className="conversationContainer">
 				<div className="conversationtopRowContainer">
 					<p className="conversationTitle">
@@ -79,11 +65,9 @@ const Dashboard = () => {
 							/>
 						)
 					)}
-					<div ref={scrollToBottom}></div>
+					<div className="scrollToBottom" ref={scrollToBottom}></div>
 				</div>
-				{isConversationOpen && (
-					<MessageInput />
-				)}
+				{isConversationOpen && <MessageInput />}
 			</div>
 		</div>
 	);
