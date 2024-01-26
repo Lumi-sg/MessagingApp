@@ -3,20 +3,17 @@ import { useConversationStore } from "../../stores/useConversationStore";
 import { useRouteLoaderData } from "react-router-dom";
 import "./dashboard.css";
 import { Conversation, Message } from "../../types/Conversation";
-import { BASEURL } from "../../main";
-import { User } from "../../types/User";
-import { createNewCachedParticipant } from "../../helpers/createNewCachedParticipant";
+import { fetchParticipantNames } from "../../helpers/fetchParticipantNames";
 import { dateFormatter } from "../../helpers/dateFormatter";
 import { useRef, useState } from "react";
 import { getCachedUsername } from "../../helpers/getCachedUsername";
 
 const Dashboard = () => {
 	const { user } = useUserStore();
-	const { currentConversation, setCurrentConversation, cachedParticipants } =
+	const { currentConversation, setCurrentConversation } =
 		useConversationStore();
 	const conversations = useRouteLoaderData("conversations") as Conversation[];
 	const [isConversationOpen, setisConversationOpen] = useState(false);
-	const [message, setMessage] = useState("");
 	const scrollToBottom = useRef<HTMLDivElement>(null);
 
 	const handleConversationClick = async (conversation: Conversation) => {
@@ -32,37 +29,6 @@ const Dashboard = () => {
 			scrollToBottom.current.scrollIntoView({ behavior: "smooth" });
 		}
 	};
-
-	const fetchParticipantNames = async (participant: String) => {
-		if (
-			// Check if the participant is already in the cachedParticipants
-			cachedParticipants.some(
-				(cachedParticipant) => cachedParticipant.userID === participant
-			)
-		) {
-			console.log("Participant is cached, skipping fetch");
-			return;
-		}
-		try {
-			const response = await fetch(`${BASEURL}/user/${participant}`, {
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
-				},
-			});
-
-			if (response.ok) {
-				const data = (await response.json()) as User;
-				createNewCachedParticipant(
-					participant.toString(),
-					data.username.toString()
-				);
-			}
-		} catch (error: any) {
-			console.log(error);
-		}
-	};
-
-
 
 	return (
 		<div className="dashboardContainer">
