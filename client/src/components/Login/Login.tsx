@@ -1,13 +1,11 @@
 import Footer from "../Footer/Footer";
 import "./login.css";
 import { BASEURL } from "../../main";
-import { User as UserType } from "../../types/User";
 import { useUserStore } from "../../stores/userStore";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const Login = () => {
-	const { setUser, setIsLoggedIn } = useUserStore();
 	const navigate = useNavigate();
 	const [error, setError] = useState<string | null>(null);
 
@@ -29,7 +27,7 @@ const Login = () => {
 
 			if (response.ok) {
 				// Redirect to a new page upon successful login
-				await saveLoginData(response, setUser, setIsLoggedIn);
+				await useUserStore.getState().login(response);
 
 				navigate("/dashboard");
 			} else {
@@ -67,15 +65,3 @@ const Login = () => {
 };
 
 export default Login;
-async function saveLoginData(
-	response: Response,
-	setUser: (user: UserType) => void,
-	setIsLoggedIn: (isLoggedIn: boolean) => void
-) {
-	const data = await response.json();
-	localStorage.setItem("token", data.token);
-	const userResponse = data.user as UserType;
-
-	setUser(userResponse);
-	setIsLoggedIn(true);
-}
