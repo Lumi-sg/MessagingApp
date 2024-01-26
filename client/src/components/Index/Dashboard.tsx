@@ -8,6 +8,7 @@ import { User } from "../../types/User";
 import { createNewCachedParticipant } from "../../helpers/createNewCachedParticipant";
 import { dateFormatter } from "../../helpers/dateFormatter";
 import { useRef, useState } from "react";
+import { getCachedUsername } from "../../helpers/getCachedUsername";
 
 const Dashboard = () => {
 	const { user } = useUserStore();
@@ -61,13 +62,7 @@ const Dashboard = () => {
 		}
 	};
 
-	const getCachedUsername = (participantID: string): string | undefined => {
-		const matchingParticipant = cachedParticipants.find(
-			(cachedParticipant) => cachedParticipant.userID === participantID
-		);
 
-		return matchingParticipant?.username;
-	};
 
 	return (
 		<div className="dashboardContainer">
