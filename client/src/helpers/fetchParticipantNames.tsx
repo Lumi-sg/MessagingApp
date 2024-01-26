@@ -2,7 +2,7 @@ import { useConversationStore } from "../stores/useConversationStore";
 import { createNewCachedParticipant } from "./createNewCachedParticipant";
 import { BASEURL } from "../main";
 import {User} from "../types/User"
-export const fetchParticipantNames = async (participant: String) => {
+export const fetchParticipantNames = async (participant: string) => {
     const { cachedParticipants } = useConversationStore.getState();
     if (
         // Check if the participant is already in the cachedParticipants
