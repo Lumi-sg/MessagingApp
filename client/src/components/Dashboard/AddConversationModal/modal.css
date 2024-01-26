@@ -1,0 +1,26 @@
+.addConversationModalContainer {
+	z-index: 9999;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	height: 25%;
+	width: 25%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid white;
+	background-color: #202020;
+	border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.convoTitle{
+    margin: 0.5rem;
+    width: 50%;
+}
+.recipient {
+    margin: 0.5rem;
+    width: 25%;
+}

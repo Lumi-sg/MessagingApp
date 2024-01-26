@@ -9,6 +9,8 @@ import { getCachedUsername } from "../../helpers/getCachedUsername";
 import MessageElement from "./Message/MessageElement";
 import MessageInput from "./MessageInput/MessageInput";
 import Sidebar from "./Sidebar/Sidebar";
+import AddConversationModal from "./AddConversationModal/AddConversationModal";
+import { useUIStore } from "../../stores/useUIStore";
 
 const Dashboard = () => {
 	const { user } = useUserStore();
@@ -17,6 +19,7 @@ const Dashboard = () => {
 	const conversations = useRouteLoaderData("conversations") as Conversation[];
 	const [isConversationOpen, setisConversationOpen] = useState(false);
 	const scrollToBottom = useRef<HTMLDivElement>(null);
+	const { showModal } = useUIStore();
 
 	const handleConversationClick = async (conversation: Conversation) => {
 		setisConversationOpen(true);
@@ -69,6 +72,7 @@ const Dashboard = () => {
 				</div>
 				{isConversationOpen && <MessageInput />}
 			</div>
+			{showModal && <AddConversationModal />}
 		</div>
 	);
 };

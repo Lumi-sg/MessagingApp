@@ -5,6 +5,8 @@ import { User as UserType } from "../types/User";
 type Userstate = {
 	user: UserType | null;
 	setUser: (user: UserType) => void;
+	allUsers : UserType[] | null;
+	setAllUsers: (allUsers: UserType[]) => void;
 	isLoggedIn: boolean;
 	setIsLoggedIn: (isLoggedIn: boolean) => void;
 	login: (response: Response) => Promise<void>;
@@ -16,6 +18,8 @@ export const useUserStore = create<Userstate>()(
 		devtools((set) => ({
 			user: null,
 			setUser: (user) => set({ user }, false, "setUser"),
+			allUsers: null,
+			setAllUsers: (allUsers) => set({ allUsers }, false, "setAllUsers"),
 			isLoggedIn: false,
 			setIsLoggedIn: (isLoggedIn) =>
 				set({ isLoggedIn }, false, "setIsLoggedIn"),
