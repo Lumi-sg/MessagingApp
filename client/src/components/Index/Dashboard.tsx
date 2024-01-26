@@ -4,9 +4,9 @@ import { useRouteLoaderData } from "react-router-dom";
 import "./dashboard.css";
 import { Conversation, Message } from "../../types/Conversation";
 import { fetchParticipantNames } from "../../helpers/fetchParticipantNames";
-import { dateFormatter } from "../../helpers/dateFormatter";
 import { useRef, useState } from "react";
 import { getCachedUsername } from "../../helpers/getCachedUsername";
+import MessageElement from "./Message/MessageElement";
 
 const Dashboard = () => {
 	const { user } = useUserStore();
@@ -71,26 +71,11 @@ const Dashboard = () => {
 				<div className="conversationContentContainer">
 					{currentConversation?.messages.map(
 						(message: Message, index) => (
-							<div
-								className={`messageCard ${
-									message.sender.username === user!.username
-										? "currentUserMessage"
-										: "otherUserMessage"
-								}`}
-								key={index}
-							>
-								<p className="messageUsername">
-									{message.sender.username}
-								</p>
-								<p className="message" key={index}>
-									{message.content}
-								</p>
-								<p className="messageTimestamp">
-									{dateFormatter(
-										message.timestamp.toString()
-									)}
-								</p>
-							</div>
+							<MessageElement
+								index={index}
+								message={message}
+								username={user!.username}
+							/>
 						)
 					)}
 					<div ref={scrollToBottom}></div>
