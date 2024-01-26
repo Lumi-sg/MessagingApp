@@ -46,13 +46,11 @@
 	border-bottom: 1px solid white;
 }
 .conversationContentContainer {
-	margin-top: 0.5rem;
-	margin-bottom: 0.5rem;
 	display: flex;
 	flex-direction: column;
-	min-height: 90%;
-	max-height: 90%;
 	overflow-y: auto;
+	max-height: 90vh;
+	min-height: 90vh;
 }
 
 .messageInputContainer {
@@ -90,9 +88,6 @@
 }
 
 .messageCard {
-	max-width: 50%;
-	width: 25%;
-	height: auto;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -102,6 +97,9 @@
 	border-radius: 10px;
 	margin: 0.5rem;
 	padding: 0.5rem;
+	width: 10rem;
+	flex-wrap: wrap;
+	max-width: 20rem;
 }
 
 .messageCard.currentUserMessage {
