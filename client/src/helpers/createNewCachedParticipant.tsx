@@ -22,6 +22,5 @@ export const createNewCachedParticipant = (
 	}
 
 	const updatedParticipants = [...cachedParticipants, newUser];
-	console.table(updatedParticipants);
 	useConversationStore.setState({ cachedParticipants: updatedParticipants });
 };

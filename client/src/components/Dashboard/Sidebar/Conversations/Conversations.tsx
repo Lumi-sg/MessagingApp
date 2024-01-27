@@ -41,7 +41,7 @@ const Conversations = ({
 };
 
 export default Conversations;
-function fetchConversationsParticipants(conversations: Conversation[]) {
+export function fetchConversationsParticipants(conversations: Conversation[]) {
 	try {
 		conversations.forEach(async (conversation: Conversation) => {
 			await Promise.all(

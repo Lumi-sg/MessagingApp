@@ -4,22 +4,34 @@ import { useRouteLoaderData } from "react-router-dom";
 import "./dashboard.css";
 import { Conversation, Message } from "../../types/Conversation";
 import { fetchParticipantNames } from "../../helpers/fetchParticipantNames";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getCachedUsername } from "../../helpers/getCachedUsername";
 import MessageElement from "./Message/MessageElement";
 import MessageInput from "./MessageInput/MessageInput";
 import Sidebar from "./Sidebar/Sidebar";
 import AddConversationModal from "./AddConversationModal/AddConversationModal";
 import { useUIStore } from "../../stores/useUIStore";
+import { fetchConversationsParticipants } from "./Sidebar/Conversations/Conversations";
 
 const Dashboard = () => {
 	const { user } = useUserStore();
-	const { currentConversation, setCurrentConversation } =
-		useConversationStore();
+	const {
+		currentConversation,
+		setCurrentConversation,
+		allConversations,
+		setAllConversations,
+	} = useConversationStore();
 	const conversations = useRouteLoaderData("conversations") as Conversation[];
 	const [isConversationOpen, setisConversationOpen] = useState(false);
 	const scrollToBottom = useRef<HTMLDivElement>(null);
 	const { showModal } = useUIStore();
+
+	useEffect(() => {
+		if (conversations) {
+			setAllConversations(conversations);
+			fetchConversationsParticipants(conversations);
+		}
+	}, []);
 
 	const handleConversationClick = async (conversation: Conversation) => {
 		setisConversationOpen(true);
@@ -38,7 +50,7 @@ const Dashboard = () => {
 	return (
 		<div className="dashboardContainer">
 			<Sidebar
-				conversations={conversations}
+				conversations={allConversations}
 				handleConversationClick={handleConversationClick}
 			/>
 			<div className="conversationContainer">

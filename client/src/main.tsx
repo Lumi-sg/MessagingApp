@@ -1,3 +1,4 @@
+import React from "react";
 import ReactDOM from "react-dom/client";
 import {
 	createBrowserRouter,
@@ -7,7 +8,7 @@ import {
 import ErrorPage from "./components/ErrorPage/ErrorPage.tsx";
 import Loading from "./components/Loading/Loading.tsx";
 import Login from "./components/Login/Login.tsx";
-import Index from "./components/Dashboard/Dashboard.tsx";
+import Dashboard from "./components/Dashboard/Dashboard.tsx";
 import "./main.css";
 import "./reset.css";
 
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
 	},
 	{
 		path: "/dashboard",
-		element: <Index />,
+		element: <Dashboard />,
 		loader: async () => {
 			const token = localStorage.getItem("token");
 
@@ -55,9 +56,11 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-	<RouterProvider
-		router={router}
-		fallbackElement={<Loading />}
-		future={{ v7_startTransition: true }}
-	/>
+	<React.StrictMode>
+		<RouterProvider
+			router={router}
+			fallbackElement={<Loading />}
+			future={{ v7_startTransition: true }}
+		/>
+	</React.StrictMode>
 );
