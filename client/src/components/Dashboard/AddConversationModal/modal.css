@@ -12,15 +12,26 @@
 	border: 1px solid white;
 	background-color: #202020;
 	border-radius: 10px;
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
-.convoTitle{
-    margin: 0.5rem;
-    width: 50%;
+.convoTitle {
+	margin: 0.5rem;
+	width: 50%;
 }
 .recipient {
-    margin: 0.5rem;
-    width: 25%;
+	margin: 0.5rem;
+	width: 25%;
+}
+
+.closeModal {
+	align-self: flex-end;
+	height: 10%;
+	width: 5%;
+	margin: 0.5rem;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }

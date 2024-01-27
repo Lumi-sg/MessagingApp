@@ -27,12 +27,30 @@ const Login = () => {
 			});
 
 			if (response.ok) {
-				// Redirect to a new page upon successful login
 				await useUserStore.getState().login(response);
 
-			
-				const allSiteUsers = (await response.json()) as User[];
-				useUserStore.getState().setAllUsers(allSiteUsers);
+				// Fetch all site users
+				try {
+					const response = await fetch(`${BASEURL}/users`, {
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${localStorage.getItem(
+								"token"
+							)}`,
+						},
+					});
+
+					if (response.ok) {
+						const allSiteUsers = await response.json();
+						useUserStore.getState().setAllUsers(allSiteUsers);
+					} else {
+						return;
+					}
+				} catch (error) {
+					console.error("Error fetching all site users:", error);
+				}
+
 				navigate("/dashboard");
 			} else {
 				console.error("Login failed");
