@@ -23,28 +23,7 @@ const Sidebar = ({ conversations, handleConversationClick }: SidebarProps) => {
 	};
 
 	const handleAddConversationClick = () => {
-		try {
-			const fetchData = async () => {
-				const response = await fetch(`${BASEURL}/users`, {
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem(
-							"token"
-						)}`,
-					},
-				});
-
-				if (!response.ok) {
-					return;
-				}
-				const allUsers = (await response.json()) as User[];
-				setAllUsers(allUsers);
-				setShowModal(true);
-			};
-
-			fetchData();
-		} catch (err) {
-			console.log(err);
-		}
+		setShowModal(true);
 	};
 
 	return (

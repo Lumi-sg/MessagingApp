@@ -4,6 +4,7 @@ import { BASEURL } from "../../main";
 import { useUserStore } from "../../stores/userStore";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { User } from "../../types/User";
 
 const Login = () => {
 	const navigate = useNavigate();
@@ -29,6 +30,9 @@ const Login = () => {
 				// Redirect to a new page upon successful login
 				await useUserStore.getState().login(response);
 
+			
+				const allSiteUsers = (await response.json()) as User[];
+				useUserStore.getState().setAllUsers(allSiteUsers);
 				navigate("/dashboard");
 			} else {
 				console.error("Login failed");
