@@ -4,6 +4,7 @@ import { useUserStore } from "../../../stores/userStore";
 import { useState } from "react";
 import { useConversationStore } from "../../../stores/useConversationStore";
 import { BASEURL } from "../../../main";
+import { fetchUserConversations } from "../../../helpers/fetchUserConversations";
 
 const AddConversationModal = () => {
 	const { setShowModal } = useUIStore();
@@ -17,14 +18,6 @@ const AddConversationModal = () => {
 	const handleAddConversationSubmit = async () => {
 		event?.preventDefault();
 		try {
-			console.log(
-				"recipientID: ",
-				recipientID,
-				"newConversationTitle: ",
-				newConversationTitle,
-				"user: ",
-				user?._id
-			);
 			const response = await fetch(`${BASEURL}/createconversation`, {
 				method: "POST",
 				headers: {
@@ -39,6 +32,7 @@ const AddConversationModal = () => {
 			});
 			if (response.ok) {
 				console.log("Conversation created successfully");
+				fetchUserConversations();
 				closeModal();
 			}
 		} catch (error: any) {

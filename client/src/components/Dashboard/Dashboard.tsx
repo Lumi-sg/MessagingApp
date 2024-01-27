@@ -33,6 +33,8 @@ const Dashboard = () => {
 		}
 	}, []);
 
+	useEffect(() => {}, [allConversations]);
+
 	const handleConversationClick = async (conversation: Conversation) => {
 		setisConversationOpen(true);
 		setCurrentConversation(conversation);

@@ -14,7 +14,7 @@ const Conversations = ({
 		fetchConversationsParticipants(conversations);
 	}, []);
 	return (
-		<>
+		<div className="sideBarConvosContainer">
 			{conversations.map((conversation: Conversation, index) => (
 				<div className="singleConversationContainer" key={index}>
 					<p
@@ -36,7 +36,7 @@ const Conversations = ({
 					</div>
 				</div>
 			))}
-		</>
+		</div>
 	);
 };
 

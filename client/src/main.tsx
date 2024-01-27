@@ -11,6 +11,7 @@ import Login from "./components/Login/Login.tsx";
 import Dashboard from "./components/Dashboard/Dashboard.tsx";
 import "./main.css";
 import "./reset.css";
+import { fetchUserConversations } from "./helpers/fetchUserConversations.tsx";
 
 export const BASEURL = "http://localhost:3000";
 
