@@ -4,8 +4,6 @@ import "../dashboard.css";
 import { useUserStore } from "../../../stores/userStore";
 import { useNavigate } from "react-router-dom";
 import { useUIStore } from "../../../stores/useUIStore";
-import { BASEURL } from "../../../main";
-import { User } from "../../../types/User";
 
 type SidebarProps = {
 	conversations: Conversation[];
@@ -13,7 +11,7 @@ type SidebarProps = {
 };
 
 const Sidebar = ({ conversations, handleConversationClick }: SidebarProps) => {
-	const { user, setAllUsers } = useUserStore();
+	const { user } = useUserStore();
 	const navigate = useNavigate();
 	const { setShowModal } = useUIStore();
 
