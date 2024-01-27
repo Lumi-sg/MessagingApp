@@ -10,6 +10,10 @@ export const fetchUserConversations = async () => {
 				Authorization: `Bearer ${localStorage.getItem("token")}`,
 			},
 		});
+        if (!response.ok) {
+            console.log("Failed to fetch user conversations");
+            return;
+        }
         useConversationStore.getState().setAllConversations(await response.json());
 	} catch (error) {
 		console.error("Error fetching user conversations:", error);

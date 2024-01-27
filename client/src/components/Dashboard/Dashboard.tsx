@@ -12,6 +12,7 @@ import Sidebar from "./Sidebar/Sidebar";
 import AddConversationModal from "./AddConversationModal/AddConversationModal";
 import { useUIStore } from "../../stores/useUIStore";
 import { fetchConversationsParticipants } from "./Sidebar/Conversations/Conversations";
+import { deleteConversation } from "../../helpers/deleteConversation";
 
 const Dashboard = () => {
 	const { user } = useUserStore();
@@ -49,6 +50,10 @@ const Dashboard = () => {
 		}
 	};
 
+	const handleDeleteConversation = async () => {
+		deleteConversation(currentConversation!._id as string);
+	}
+
 	return (
 		<div className="dashboardContainer">
 			<Sidebar
@@ -60,6 +65,7 @@ const Dashboard = () => {
 					<p className="conversationTitle">
 						{currentConversation?.conversationTitle}
 					</p>
+
 					<div className="conversationParticipantsNames">
 						{currentConversation?.participants.map(
 							(participantID, index) => (
@@ -71,6 +77,9 @@ const Dashboard = () => {
 							)
 						)}
 					</div>
+					{currentConversation && (
+						<button onClick={handleDeleteConversation}>Delete</button>
+					)}
 				</div>
 				<div className="conversationContentContainer">
 					{currentConversation?.messages.map(

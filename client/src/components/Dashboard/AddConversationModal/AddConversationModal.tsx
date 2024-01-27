@@ -2,15 +2,12 @@ import { useUIStore } from "../../../stores/useUIStore";
 import "./modal.css";
 import { useUserStore } from "../../../stores/userStore";
 import { useState } from "react";
-import { useConversationStore } from "../../../stores/useConversationStore";
 import { BASEURL } from "../../../main";
 import { fetchUserConversations } from "../../../helpers/fetchUserConversations";
 
 const AddConversationModal = () => {
 	const { setShowModal } = useUIStore();
 	const { user, allUsers } = useUserStore();
-	// const { currentConversation, setCurrentConversation } =
-	useConversationStore();
 	const [responseError, setResponseError] = useState("");
 	const [newConversationTitle, setNewConversationTitle] = useState("");
 	const [recipientID, setRecipientID] = useState("");
