@@ -8,31 +8,43 @@ import { BASEURL } from "../../../main";
 const AddConversationModal = () => {
 	const { setShowModal } = useUIStore();
 	const { user, allUsers } = useUserStore();
-	const { currentConversation, setCurrentConversation } =
-		useConversationStore();
+	// const { currentConversation, setCurrentConversation } =
+	useConversationStore();
 	const [responseError, setResponseError] = useState("");
 	const [newConversationTitle, setNewConversationTitle] = useState("");
 	const [recipientID, setRecipientID] = useState("");
 
-	const handleAddConversationSubmit = () => {
+	const handleAddConversationSubmit = async () => {
+		event?.preventDefault();
 		try {
-			const createConversationRequest = fetch(`${BASEURL}/createconversation`, {
+			console.log(
+				"recipientID: ",
+				recipientID,
+				"newConversationTitle: ",
+				newConversationTitle,
+				"user: ",
+				user?._id
+			);
+			const response = await fetch(`${BASEURL}/createconversation`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
 				},
 				body: JSON.stringify({
-                    conversationTitle: newConversationTitle,
-                    senderUser: user?._id,
-                    recipientUser: recipientID,
+					conversationTitle: newConversationTitle,
+					senderUserID: user?._id,
+					receiverUserID: recipientID,
 				}),
 			});
+			if (response.ok) {
+				console.log("Conversation created successfully");
+				closeModal();
+			}
 		} catch (error: any) {
 			console.error("Error creating conversation", error);
 			setResponseError(error.toString());
 		}
-		closeModal();
 	};
 
 	const closeModal = () => {
@@ -55,9 +67,10 @@ const AddConversationModal = () => {
 			<select
 				name="recipient"
 				className="recipient"
-				value={newRecipient}
-				onChange={(e) => setNewRecipient(e.target.value)}
+				value={recipientID}
+				onChange={(e) => setRecipientID(e.target.value)}
 			>
+				<option>Select Recipient</option>
 				{allUsers!.map(
 					(fetchedUser) =>
 						fetchedUser.username !== user?.username && (
