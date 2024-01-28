@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useConversationStore } from "../../../stores/useConversationStore";
 import { useUserStore } from "../../../stores/userStore";
 import { useState } from "react";
@@ -14,7 +14,7 @@ const MessageInput = () => {
 		if (e.key === "Enter") {
 			handleSubmitMessage();
 		}
-	}
+	};
 
 	const handleSubmitMessage = async () => {
 		if (message !== "") {
@@ -32,13 +32,12 @@ const MessageInput = () => {
 						userID: user?._id,
 						content: message,
 					}),
-					
 				});
 				if (!response.ok) {
 					console.log("Failed to send message");
 					return;
 				}
-				fetchUserConversations();
+				await fetchUserConversations();
 				setMessage("");
 			} catch (error) {
 				console.log(error);

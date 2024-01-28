@@ -34,6 +34,16 @@ const Dashboard = () => {
 		}
 	}, []);
 
+	useEffect(() => {
+		const refreshedConversation = allConversations.find(
+			(conversation) =>
+				conversation._id === currentConversation?._id
+		)
+		if (refreshedConversation) {
+			handleConversationClick(refreshedConversation);
+		}
+	},[allConversations])
+
 	const handleConversationClick = async (conversation: Conversation) => {
 		setisConversationOpen(true);
 		setCurrentConversation(conversation);

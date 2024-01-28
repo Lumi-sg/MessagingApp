@@ -30,6 +30,7 @@ const AddConversationModal = () => {
 			if (response.ok) {
 				console.log("Conversation created successfully");
 				fetchUserConversations();
+				fetchUserConversations();
 				closeModal();
 			}
 		} catch (error: any) {
