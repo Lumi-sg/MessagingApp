@@ -18,7 +18,7 @@ label {
 	margin: 0.5rem;
 }
 
-input {
+.loginForm >input {
 	width: 90%;
 	padding: 8px;
 	margin-bottom: 16px;

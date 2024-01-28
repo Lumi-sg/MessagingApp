@@ -13,6 +13,7 @@ const Conversations = ({
 	useEffect(() => {
 		fetchConversationsParticipants(conversations);
 	}, []);
+
 	return (
 		<div className="sideBarConvosContainer">
 			{conversations.map((conversation: Conversation, index) => (

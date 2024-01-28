@@ -34,8 +34,6 @@ const Dashboard = () => {
 		}
 	}, []);
 
-	useEffect(() => {}, [allConversations]);
-
 	const handleConversationClick = async (conversation: Conversation) => {
 		setisConversationOpen(true);
 		setCurrentConversation(conversation);
@@ -52,7 +50,7 @@ const Dashboard = () => {
 
 	const handleDeleteConversation = async () => {
 		deleteConversation(currentConversation!._id as string);
-	}
+	};
 
 	return (
 		<div className="dashboardContainer">
@@ -78,7 +76,9 @@ const Dashboard = () => {
 						)}
 					</div>
 					{currentConversation && (
-						<button onClick={handleDeleteConversation}>Delete</button>
+						<button onClick={handleDeleteConversation}>
+							Delete
+						</button>
 					)}
 				</div>
 				<div className="conversationContentContainer">

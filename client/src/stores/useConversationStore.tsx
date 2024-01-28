@@ -14,7 +14,7 @@ type Conversationstate = {
 
 export const useConversationStore = create<Conversationstate>()(
 	devtools((set) => ({
-		currentConversation: null,
+		currentConversation: null, 
 		setCurrentConversation: (currentConversation) =>
 			set({ currentConversation }, false, "setCurrentConversation"),
 		allConversations: [],
