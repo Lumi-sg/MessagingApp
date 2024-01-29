@@ -5,7 +5,7 @@ import { User as UserType } from "../types/User";
 type Userstate = {
 	user: UserType | null;
 	setUser: (user: UserType) => void;
-	allUsers : UserType[] | null;
+	allUsers: UserType[] | null;
 	setAllUsers: (allUsers: UserType[]) => void;
 	isLoggedIn: boolean;
 	setIsLoggedIn: (isLoggedIn: boolean) => void;

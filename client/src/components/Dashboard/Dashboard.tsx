@@ -34,6 +34,7 @@ const Dashboard = () => {
 		}
 	}, []);
 
+	//This is a hack to refresh the conversation data in the conversation.
 	useEffect(() => {
 		const refreshedConversation = allConversations.find(
 			(conversation) =>
