@@ -85,8 +85,8 @@ const Login = () => {
 				passwordRef.current!.value = "";
 				return;
 			}
-			const errorResponse = await response.text();
-			setError(errorResponse);
+			const errors = await response.json();
+			setError(errors.errors[0].msg);
 		} catch (error) {
 			console.log(error);
 		}
