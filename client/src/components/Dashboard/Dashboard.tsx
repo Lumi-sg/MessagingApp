@@ -75,6 +75,7 @@ const Dashboard = () => {
 						handleDeleteConversation={handleDeleteConversation}
 					/>
 				)}
+
 				<div className="conversationContentContainer">
 					{currentConversation?.messages.map(
 						(message: Message, index) => (
