@@ -3,10 +3,13 @@
 		"module": "NodeNext",
 		"moduleResolution": "NodeNext",
 		"baseUrl": "src",
-		"outDir": "dist",
+		"outDir": "./dist",
 		"sourceMap": true,
 		"noImplicitAny": true,
-		"strict": true
+		"strict": true,
+		"esModuleInterop": true,
+		"resolveJsonModule": true
 	},
-	"include": ["src/**/*"]
+	"include": ["src/**/*.ts"],
+	"exclude": ["node_modules"]
 }
