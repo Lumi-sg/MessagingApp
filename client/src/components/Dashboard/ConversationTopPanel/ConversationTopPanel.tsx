@@ -1,16 +1,14 @@
 import React from "react";
 import { Conversation } from "../../../types/Conversation";
 import { getCachedUsername } from "../../../helpers/getCachedUsername";
-import { deleteConversation } from "../../../helpers/deleteConversation";
 
 type Props = {
 	currentConversation: Conversation;
+    handleDeleteConversation: () => void;
 };
 
-const ConversationTopPanel = ({ currentConversation }: Props) => {
-	const handleDeleteConversation = async () => {
-		deleteConversation(currentConversation!._id as string);
-	};
+const ConversationTopPanel = ({ currentConversation, handleDeleteConversation }: Props) => {
+
 	return (
 		<div className="conversationtopRowContainer">
 			<p className="conversationTitle">

@@ -5,7 +5,6 @@ import "./dashboard.css";
 import { Conversation, Message } from "../../types/Conversation";
 import { fetchParticipantNames } from "../../helpers/fetchParticipantNames";
 import { useEffect, useRef, useState } from "react";
-import { getCachedUsername } from "../../helpers/getCachedUsername";
 import MessageElement from "./Message/MessageElement";
 import MessageInput from "./MessageInput/MessageInput";
 import Sidebar from "./Sidebar/Sidebar";
@@ -13,6 +12,7 @@ import AddConversationModal from "./AddConversationModal/AddConversationModal";
 import { useUIStore } from "../../stores/useUIStore";
 import { fetchConversationsParticipants } from "./Sidebar/Conversations/Conversations";
 import ConversationTopPanel from "./ConversationTopPanel/ConversationTopPanel";
+import { deleteConversation } from "../../helpers/deleteConversation";
 const Dashboard = () => {
 	const { user } = useUserStore();
 	const {
@@ -43,6 +43,11 @@ const Dashboard = () => {
 		}
 	}, [allConversations]);
 
+	const handleDeleteConversation = async () => {
+		deleteConversation(currentConversation!._id as string);
+		setisConversationOpen(false);
+	};
+
 	const handleConversationClick = async (conversation: Conversation) => {
 		setisConversationOpen(true);
 		setCurrentConversation(conversation);
@@ -67,6 +72,7 @@ const Dashboard = () => {
 				{currentConversation && (
 					<ConversationTopPanel
 						currentConversation={currentConversation}
+						handleDeleteConversation={handleDeleteConversation}
 					/>
 				)}
 				<div className="conversationContentContainer">
