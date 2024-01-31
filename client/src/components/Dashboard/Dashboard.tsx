@@ -12,8 +12,7 @@ import Sidebar from "./Sidebar/Sidebar";
 import AddConversationModal from "./AddConversationModal/AddConversationModal";
 import { useUIStore } from "../../stores/useUIStore";
 import { fetchConversationsParticipants } from "./Sidebar/Conversations/Conversations";
-import { deleteConversation } from "../../helpers/deleteConversation";
-
+import ConversationTopPanel from "./ConversationTopPanel/ConversationTopPanel";
 const Dashboard = () => {
 	const { user } = useUserStore();
 	const {
@@ -37,13 +36,12 @@ const Dashboard = () => {
 	//This is a hack to refresh the conversation data in the conversation.
 	useEffect(() => {
 		const refreshedConversation = allConversations.find(
-			(conversation) =>
-				conversation._id === currentConversation?._id
-		)
+			(conversation) => conversation._id === currentConversation?._id
+		);
 		if (refreshedConversation) {
 			handleConversationClick(refreshedConversation);
 		}
-	},[allConversations])
+	}, [allConversations]);
 
 	const handleConversationClick = async (conversation: Conversation) => {
 		setisConversationOpen(true);
@@ -59,10 +57,6 @@ const Dashboard = () => {
 		}
 	};
 
-	const handleDeleteConversation = async () => {
-		deleteConversation(currentConversation!._id as string);
-	};
-
 	return (
 		<div className="dashboardContainer">
 			<Sidebar
@@ -70,28 +64,11 @@ const Dashboard = () => {
 				handleConversationClick={handleConversationClick}
 			/>
 			<div className="conversationContainer">
-				<div className="conversationtopRowContainer">
-					<p className="conversationTitle">
-						{currentConversation?.conversationTitle}
-					</p>
-
-					<div className="conversationParticipantsNames">
-						{currentConversation?.participants.map(
-							(participantID, index) => (
-								<span key={index}>
-									{getCachedUsername(
-										participantID.toString()
-									) || "Unknown User"}
-								</span>
-							)
-						)}
-					</div>
-					{currentConversation && (
-						<button onClick={handleDeleteConversation}>
-							Delete
-						</button>
-					)}
-				</div>
+				{currentConversation && (
+					<ConversationTopPanel
+						currentConversation={currentConversation}
+					/>
+				)}
 				<div className="conversationContentContainer">
 					{currentConversation?.messages.map(
 						(message: Message, index) => (

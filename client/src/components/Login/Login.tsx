@@ -12,7 +12,7 @@ const Login = () => {
 	const usernameRef = useRef<HTMLInputElement>(null);
 	const passwordRef = useRef<HTMLInputElement>(null);
 
-	const handleSubmit = async (event: any) => {
+	const handleLoginClick = async (event: any) => {
 		event.preventDefault();
 
 		try {
@@ -112,7 +112,7 @@ const Login = () => {
 						required
 					/>
 					<div className="buttonContainer">
-						<button onClick={handleSubmit}>Login</button>
+						<button onClick={handleLoginClick}>Login</button>
 						<button onClick={handleSignupClick}>Signup</button>
 					</div>
 					{error && <div style={{ color: "red" }}>{error}</div>}
