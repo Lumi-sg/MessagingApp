@@ -1,10 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import {
-	createBrowserRouter,
-	Navigate,
-	RouterProvider,
-} from "react-router-dom";
+import { Navigate, RouterProvider, createHashRouter } from "react-router-dom";
 import ErrorPage from "./components/ErrorPage/ErrorPage.tsx";
 import Loading from "./components/Loading/Loading.tsx";
 import Login from "./components/Login/Login.tsx";
@@ -12,9 +8,10 @@ import Dashboard from "./components/Dashboard/Dashboard.tsx";
 import "./main.css";
 import "./reset.css";
 
-export const BASEURL = "http://localhost:3000";
+// export const BASEURL = "http://localhost:3000";
+export const BASEURL = "https://lumimessage.fly.dev";
 
-const router = createBrowserRouter([
+const router = createHashRouter([
 	{
 		path: "/",
 		element: <Navigate to="/login" />,

@@ -1,4 +1,3 @@
-import React from "react";
 import { Conversation } from "../../../types/Conversation";
 import { getCachedUsername } from "../../../helpers/getCachedUsername";
 
